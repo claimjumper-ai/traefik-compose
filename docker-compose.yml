@@ -26,13 +26,18 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - traefik_letsencrypt:/letsencrypt
     networks:
-      - proxy
+      proxy:
+        ipv4_address: 172.18.0.2
 
 networks:
   # Created here, joined by every other stack as `external: true, name: proxy`.
   proxy:
     name: proxy
     attachable: true
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
+          gateway: 172.18.0.1
 
 volumes:
   traefik_letsencrypt:
